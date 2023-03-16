@@ -1,0 +1,49 @@
+
+ - FastME 
+ - FastME %s - 
+
+ - 
+
+
+Paper to be cited:
+
+FastME 2.0 - A comprehensive, accurate and fast distance-based phylogeny inference program.
+	Vincent Lefort, Richard Desper and Olivier Gascuel,
+	Molecular Biology and Evolution 32(10), 2798-800, 2015.
+
+-------------------------------------------------------------------------------
+Settings for this run:
+
+  I                                      Input data type  Matrix          
+  D                                   Number of datasets  1               
+  M                         Initial tree building method  TaxAdd_BalME    
+  N                                   NNI postprocessing  NNI_BalME       
+  S                                   SPR postprocessing  yes             
+
+-------------------------------------------------------------------------------
+Dataset 1
+	Two tree searches are performed, with NNIs and SPRs respectively.
+	The resulting tree is the best (shortest) of both.
+
+	Tree length is 0.15085185
+	Before NNI:     tree length is 0.15085185
+	NNI      1: new tree length is 0.15000665
+	NNI      2: new tree length is 0.14883071
+	NNI      3: new tree length is 0.14843423
+	NNI      4: new tree length is 0.14806612
+	NNI      5: new tree length is 0.14772290
+	NNI      6: new tree length is 0.14705991
+	NNI      7: new tree length is 0.14689591
+	NNI      8: new tree length is 0.14671314
+	NNI      9: new tree length is 0.14665112
+	Performed 9 NNI(s).
+
+	Assign BME weights and re-weight tree.
+	Before SPR:     tree length is 0.15085185
+	SPR      1: new tree length is 0.14883071
+	SPR      2: new tree length is 0.14708211
+	SPR      3: new tree length is 0.14671314
+	SPR      4: new tree length is 0.14665112
+	Performed 4 SPR(s).
+
+	Explained variance : 0.94805082
