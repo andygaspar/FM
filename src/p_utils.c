@@ -525,7 +525,7 @@ boolean Read_One_Line_Seq (seq ***data, int num_otu, FILE *in)
 {
 	boolean ret;
 	char c = ' ';
-	const char badSymbol[28] = "ABCDEFGHIKLMNOPQRSTUVWXYZ?-.";
+	const char badSymbol[28] = "~";
 
 	while (1)
 	{
@@ -1577,7 +1577,7 @@ void Get_AA_Freqs (allseq *data)
 
 allseq *Copy_Cseq (allseq *ori, int len, int ns)
 {
-	allseq *new;
+	allseq *new_seq;
 	int i,j,n_otu;
 	char **sp_names;
 
@@ -1590,45 +1590,45 @@ allseq *Copy_Cseq (allseq *ori, int len, int ns)
 		strncpy (sp_names[i], ori->c_seq[i]->name, MAX_NAME_LENGTH);
 	}
 
-	new = Make_Cseq (n_otu, len, ori->init_len, sp_names);
-	new->obs_pinvar = ori->obs_pinvar;
+	new_seq = Make_Cseq (n_otu, len, ori->init_len, sp_names);
+	new_seq->obs_pinvar = ori->obs_pinvar;
 
 	for (i=0; i<ori->init_len; i++)
-		new->sitepatt[i] = ori->sitepatt[i];
+		new_seq->sitepatt[i] = ori->sitepatt[i];
 
 	for (j=0; j<ori->crunch_len; j++)
 	{
 		for (i=0; i<ori->n_otu; i++)
 		{
-			new->c_seq[i]->state[j]     = ori->c_seq[i]->state[j];
-			new->c_seq[i]->is_ambigu[j] = ori->c_seq[i]->is_ambigu[j];
+			new_seq->c_seq[i]->state[j]     = ori->c_seq[i]->state[j];
+			new_seq->c_seq[i]->is_ambigu[j] = ori->c_seq[i]->is_ambigu[j];
 		}
-		new->wght[j]   = ori->wght[j];
-		new->ambigu[j] = ori->ambigu[j];
-		new->invar[j]  = ori->invar[j];
+		new_seq->wght[j]   = ori->wght[j];
+		new_seq->ambigu[j] = ori->ambigu[j];
+		new_seq->invar[j]  = ori->invar[j];
 	}
 
 	for (i=0; i<ori->n_otu; i++)
 	{
-		new->c_seq[i]->len = ori->c_seq[i]->len;
-		strncpy (new->c_seq[i]->name, ori->c_seq[i]->name, MAX_NAME_LENGTH);
+		new_seq->c_seq[i]->len = ori->c_seq[i]->len;
+		strncpy (new_seq->c_seq[i]->name, ori->c_seq[i]->name, MAX_NAME_LENGTH);
 	}
 
-	new->init_len	= ori->init_len;
-	new->clean_len	= ori->clean_len;
-	new->crunch_len	= ori->crunch_len;
+	new_seq->init_len	= ori->init_len;
+	new_seq->clean_len	= ori->clean_len;
+	new_seq->crunch_len	= ori->crunch_len;
 
 	for (i=0; i<ns; i++)
-		new->b_frq[i] = ori->b_frq[i];
+		new_seq->b_frq[i] = ori->b_frq[i];
 
-	new->n_otu = ori->n_otu;
+	new_seq->n_otu = ori->n_otu;
 
 	for (i=0; i<n_otu; i++)
 		free (sp_names[i]);
 
 	free (sp_names);
 
-	return new;
+	return new_seq;
 }
 
 /*********************************************************/

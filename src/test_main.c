@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "fastme.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -52,44 +52,44 @@ static char* get_value(char* s)
     }
 }
 
-int main()
-{
-    FILE* fp = fopen("../mat", "r");
-    if (fp != NULL) {
-        int nlines = get_nlines(fp);
+// int main()
+// {
+//     FILE* fp = fopen("../mat", "r");
+//     if (fp != NULL) {
+//         int nlines = get_nlines(fp);
 
-        printf("nlines: %d\n", nlines);
+//         printf("nlines: %d\n", nlines);
 
-        // make values..
-        char** values = calloc(nlines + 1, sizeof(char*)); // +1 for a sentinel
-        if (values != NULL) {
-            char line[1024];
-            int idx = 0;
-            while (fgets(line, sizeof(line), fp) != NULL) {
-                values[idx] = get_value(line);
-                idx++;
-            }
-        }
+//         // make values..
+//         char** values = calloc(nlines + 1, sizeof(char*)); // +1 for a sentinel
+//         if (values != NULL) {
+//             char line[1024];
+//             int idx = 0;
+//             while (fgets(line, sizeof(line), fp) != NULL) {
+//                 values[idx] = get_value(line);
+//                 idx++;
+//             }
+//         }
 
-        // use values..
-        char** p = &values[0];
-        while (*p != NULL) {
-            printf("%s\n", *p);
-            p++;
-        }
+//         // use values..
+//         char** p = &values[0];
+//         while (*p != NULL) {
+//             printf("%s\n", *p);
+//             p++;
+//         }
 
-        // clean values..
-        p = &values[0];
-        while (*p != NULL) {
-            free(*p);
-            p++;
-        }
+//         // clean values..
+//         p = &values[0];
+//         while (*p != NULL) {
+//             free(*p);
+//             p++;
+//         }
 
-        fclose(fp);
-    } else {
-        perror("../mat");
-    }
-}
+//         fclose(fp);
+//     } else {
+//         perror("../mat");
+//     }
+// }
 
 /*
 
@@ -161,17 +161,19 @@ void mandi(){
     printf("mandi");
 }
 
+*/
+
 int main (int argc, char **argv) {
     printf("ok\n");
     // Options *options;
     // options = chooseSettings (argc, argv);
-    double** D;
+    // double** D;
     printf("ok\n");
-    D = loadMattrix(3);
+    // D = loadMattrix(3);
     // D = loadM (options->fpI_data_file, &numSpecies, species);
     printf("ok\n");
-    // run(argc, argv);
+    run(argc, argv);
 }
 
-*/
+
 
