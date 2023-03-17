@@ -24,9 +24,60 @@
 boolean isBoostrap;
 int verbose;
 
+
+void recursion_print (edge *e)
+{	
+	if (NULL!= e) {
+
+	printf("node %i %i\n" ,e->head->index2, e->head->index);
+	recursion_print(e->head->leftEdge);
+	recursion_print(e->head->rightEdge);
+	}	
+}
+
+
+void printTree (tree *T)
+{	
+	printf("size %i \n", T->size);
+	printf("node %i %c%c\n" ,T->root->index2, T->root->label[0], T->root->label[1]);
+	recursion_print(T->root->leftEdge);
+	recursion_print(T->root->rightEdge);
+
+}
+
+void recursion_fill_adj (int from, long** A, edge *e){
+	if (NULL!= e) {
+
+	A[from][e->head->index] = 1;
+	A[e->head->index][from] = 1;
+	recursion_fill_adj(e->head->index, A, e->head->leftEdge);
+	recursion_fill_adj(e->head->index, A, e->head->rightEdge);
+	}	
+
+}
+
+void printAdjmat(tree *T) {
+	long**  A;
+	int size = T->size;
+    A = (long** ) mCalloc(size, sizeof(long*)); 
+    for(int i = 0;i<size;i++) {
+        A[i] = (long* ) mCalloc(size, sizeof(long));
+    }
+
+	recursion_fill_adj(T->root->index, A, T->root->leftEdge);
+	recursion_fill_adj(T->root->index, A, T->root->rightEdge);
+
+	for(int i = 0;i<size;i++) {
+		for(int j = 0; j < size; j++) {
+			printf("%i ", A[i][j]);
+		}
+		printf("\n");
+	}
+}
+
 /*********************************************************/
 
-int run(int argc, char **argv)
+int run(double**d, int argc, char **argv)
 {
 	Options *options;
 	set *species, *species_bk;
@@ -135,7 +186,9 @@ int run(int argc, char **argv)
 **********************************************************/
 		if (MATRIX == options->input_type)
 		{
-			D = loadM (options->fpI_data_file, &numSpecies, species);
+			double** G;
+			G = loadM (options->fpI_data_file, &numSpecies, species);
+			D = d;
 			for(int i=0; i<numSpecies; i++) {
 				for(int j=0; j<numSpecies; j++) printf("%f ", D[i][j]);
 				printf("\n");
@@ -179,6 +232,8 @@ int run(int argc, char **argv)
 			}
 
 			T = ImproveTree (options, T, D, A, &nniCount, &sprCount, options->fpO_stat_file);
+			printTree(T);
+			printAdjmat(T);
 		
 			explainedVariance (D, T, numSpecies, options->precision, options->input_type, options->fpO_stat_file);
 				

@@ -29,7 +29,7 @@
 #include "random.h"
 #include "distance.h"
 
-int run(int argc, char **argv);
+int run(double** d, int argc, char **argv);
 
 void printFinalData (Options *options, char **bootTrees, char **matStr);
 
