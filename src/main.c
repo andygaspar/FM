@@ -25,6 +25,18 @@ boolean isBoostrap;
 int verbose;
 
 
+void make_set(int n_taxa, set *S) {
+	node *v = NULL;
+	for(int i=0; i< n_taxa; i++) {
+		char c= i +'0';
+		v = makeNode (&c, -1);
+		v->index2 = i;
+		S = addToSet (v, S);
+	}
+
+}
+
+
 void recursion_print (edge *e)
 {	
 	if (NULL!= e) {
@@ -90,7 +102,7 @@ void printAdjmat(tree *T) {
 
 /*********************************************************/
 
-int run(double**d, int argc, char **argv)
+int run(double**d, int n_taxa, int argc, char **argv)
 {
 	Options *options;
 	set *species, *species_bk;
@@ -105,7 +117,7 @@ int run(double**d, int argc, char **argv)
 	int i = 0;
 #endif
 
-	int numSpecies;
+	int numSpecies = n_taxa;
 	int setCounter = 0;
 	
 	int nniCount, sprCount, repCounter, repToPrint, printedRep;
@@ -199,8 +211,9 @@ int run(double**d, int argc, char **argv)
 **********************************************************/
 		if (MATRIX == options->input_type)
 		{
-			double** G;
-			G = loadM (options->fpI_data_file, &numSpecies, species);
+			// double** G;
+			// G = loadM (options->fpI_data_file, &numSpecies, species);
+			make_set(numSpecies, species);
 			D = d;
 			for(int i=0; i<numSpecies; i++) {
 				for(int j=0; j<numSpecies; j++) printf("%f ", D[i][j]);
@@ -245,8 +258,7 @@ int run(double**d, int argc, char **argv)
 			}
 
 			T = ImproveTree (options, T, D, A, &nniCount, &sprCount, options->fpO_stat_file);
-			// printTree(T);
-			printf("ddddd");
+			printTree(T);
 			printAdjmat(T);
 		
 			explainedVariance (D, T, numSpecies, options->precision, options->input_type, options->fpO_stat_file);

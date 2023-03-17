@@ -58,7 +58,7 @@ int main (int argc, char **argv) {
     // D = loadMattrix(3);
     // D = loadM (options->fpI_data_file, &numSpecies, species);
     // printf("ok\n");
-    run(D, argc, argv);
+    run(D, 15, argc, argv);
 }
 
 
