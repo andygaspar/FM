@@ -45,14 +45,27 @@ void printTree (tree *T)
 
 }
 
-void recursion_fill_adj (int from, long** A, edge *e){
+int recursion_fill_adj (int from, int internal_idx, long** A, edge *e){
 	if (NULL!= e) {
 
-	A[from][e->head->index] = 1;
-	A[e->head->index][from] = 1;
-	recursion_fill_adj(e->head->index, A, e->head->leftEdge);
-	recursion_fill_adj(e->head->index, A, e->head->rightEdge);
+		if(e->head->index2 < 0){
+			A[from][internal_idx] = 1;
+			A[internal_idx][from] = 1;	
+			from = internal_idx;
+			internal_idx ++;	
+		}
+		else{
+			A[from][e->head->index2] = 1;
+			A[e->head->index2][from] = 1;
+			from = e->head->index2;
+		}
+
+	
+	internal_idx = recursion_fill_adj(from, internal_idx, A, e->head->leftEdge);
+	internal_idx = recursion_fill_adj(from, internal_idx, A, e->head->rightEdge);
+	
 	}	
+	return internal_idx;
 
 }
 
@@ -63,9 +76,9 @@ void printAdjmat(tree *T) {
     for(int i = 0;i<size;i++) {
         A[i] = (long* ) mCalloc(size, sizeof(long));
     }
-
-	recursion_fill_adj(T->root->index, A, T->root->leftEdge);
-	recursion_fill_adj(T->root->index, A, T->root->rightEdge);
+	int internal_idx = (T-> size + 2) / 2;
+	internal_idx = recursion_fill_adj(T->root->index, internal_idx, A, T->root->leftEdge);
+	recursion_fill_adj(T->root->index, internal_idx, A, T->root->rightEdge);
 
 	for(int i = 0;i<size;i++) {
 		for(int j = 0; j < size; j++) {
@@ -232,7 +245,8 @@ int run(double**d, int argc, char **argv)
 			}
 
 			T = ImproveTree (options, T, D, A, &nniCount, &sprCount, options->fpO_stat_file);
-			printTree(T);
+			// printTree(T);
+			printf("ddddd");
 			printAdjmat(T);
 		
 			explainedVariance (D, T, numSpecies, options->precision, options->input_type, options->fpO_stat_file);
