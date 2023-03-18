@@ -28,7 +28,7 @@ int verbose;
 void make_set(int n_taxa, set *S) {
 	node *v = NULL;
 	for(int i=0; i< n_taxa; i++) {
-		char c= i +'0';
+		char c= i + '0';
 		v = makeNode (&c, -1);
 		v->index2 = i;
 		S = addToSet (v, S);
@@ -40,6 +40,7 @@ void make_set(int n_taxa, set *S) {
 void recursion_print (edge *e)
 {	
 	if (NULL!= e) {
+	if(e -> head -> middleEdge == NULL) printf("rrrr");
 
 	printf("node %i %i\n" ,e->head->index2, e->head->index);
 	recursion_print(e->head->leftEdge);
@@ -50,6 +51,7 @@ void recursion_print (edge *e)
 
 void printTree (tree *T)
 {	
+	if(T-> root -> middleEdge == NULL) printf("rrrr");
 	printf("size %i \n", T->size);
 	printf("node %i %c%c\n" ,T->root->index2, T->root->label[0], T->root->label[1]);
 	recursion_print(T->root->leftEdge);
@@ -81,7 +83,7 @@ int recursion_fill_adj (int from, int internal_idx, long** A, edge *e){
 
 }
 
-void printAdjmat(tree *T) {
+void tree_to_adj_mat(tree *T) {
 	long**  A;
 	int size = T->size;
     A = (long** ) mCalloc(size, sizeof(long*)); 
@@ -99,6 +101,16 @@ void printAdjmat(tree *T) {
 		printf("\n");
 	}
 }
+
+
+// tree adj_to_tree(double** A, int n_taxa) {
+// 	tree *T;
+// 	node *root;
+
+// 	T = newTree();
+// 	char c= 0 + '0';
+// 	root = makeNode(c, 0);
+// }
 
 /*********************************************************/
 
@@ -259,7 +271,7 @@ int run(double**d, int n_taxa, int argc, char **argv)
 
 			T = ImproveTree (options, T, D, A, &nniCount, &sprCount, options->fpO_stat_file);
 			printTree(T);
-			printAdjmat(T);
+			tree_to_adj_mat(T);
 		
 			explainedVariance (D, T, numSpecies, options->precision, options->input_type, options->fpO_stat_file);
 				

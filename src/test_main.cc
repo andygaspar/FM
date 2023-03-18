@@ -24,6 +24,29 @@
 
 using string = std::string;
 
+int** fill_int_matrix() {
+    int** matrix = new int*[28];
+    std::fstream file("init_mat");
+    std::string line;
+    std::cout<<" ***\n";
+    int row=0;
+    while (getline(file, line) and row < 28){
+        std::stringstream ss( line );                     
+        std::string data;
+        int col = 0;
+        matrix[row] = new int[28];
+        while (getline( ss, data, ' ' ) )           
+        {
+            matrix[row][col]=stoi(data);
+            col++;
+            std::cout<<stoi(data)<<" ";
+        }
+        std::cout<<"\n";
+        row++;
+    }
+    return matrix;
+}
+
 
 double** fill_matrix() {
     double** matrix = new double*[15];
@@ -53,6 +76,7 @@ int main (int argc, char **argv) {
     // Options *options;
     // options = chooseSettings (argc, argv);
     double** D = fill_matrix();
+    int** A = fill_int_matrix();
     printf("ok\n");
     
     // D = loadMattrix(3);
