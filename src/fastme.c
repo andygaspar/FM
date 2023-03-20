@@ -24,9 +24,10 @@
 boolean isBoostrap;
 int verbose;
 
+
 /*********************************************************/
 
-int main (int argc, char **argv)
+int run(double**d, int n_taxa, int** init_adj, int argc, char **argv)
 {
 	Options *options;
 	set *species, *species_bk;
@@ -37,11 +38,32 @@ int main (int argc, char **argv)
 
 	tree *T = NULL;
 
+	tree *TT = NULL;
+
+	int** sparse_A;
+	sparse_A = get_sparse_A(init_adj, n_taxa*2 - 2);
+
+	printf("\n%i size tree\n", n_taxa);
+	
+	for(int i = 0; i<n_taxa*2 - 2; i++){
+
+		printf("%i   ", i);
+		for(int j=0; j<3; j++) printf("%i ", sparse_A[i][j]);
+		printf("\n");
+	}
+
+	TT = adj_to_tree(sparse_A, n_taxa);
+
+	// printf("\n%i  ** size tree\n", TT->size);
+	printTree(TT);
+
+
+
 #ifdef _OPENMP
 	int i = 0;
 #endif
 
-	int numSpecies;
+	int numSpecies = n_taxa;
 	int setCounter = 0;
 	
 	int nniCount, sprCount, repCounter, repToPrint, printedRep;
@@ -69,8 +91,8 @@ int main (int argc, char **argv)
 	options = chooseSettings (argc, argv);
     printf( "\n . Method used %d", options -> method);
     printf( "\n");
-//DEBUG
-//	PrintOptions (options);
+
+   PrintOptions (options);
 
 #ifdef _OPENMP
 	Message ( (char*)"This analysis will run on %d threads.", options->nb_threads);
@@ -104,7 +126,6 @@ int main (int argc, char **argv)
 		nniCount = sprCount = repCounter = 0;
 		setCounter++;
 		species = (set *) mCalloc (1, sizeof(set));
-		InitSpeciesAndTrees (options, species, bootTrees, bestTree);
 		
 		printf ("\n#  Analysing dataset %d\n", setCounter);
 
@@ -120,13 +141,13 @@ int main (int argc, char **argv)
 
 		if (options->nb_datasets > 1)
 		{
-			if (options->nb_bootstraps > 0)
-			{
-				if (setCounter > 1)
-					fprintf (options->fpO_boot_file,"\n");
+			// if (options->nb_bootstraps > 0)
+			// {
+			// 	if (setCounter > 1)
+			// 		fprintf (options->fpO_boot_file,"\n");
 
-				fprintf (options->fpO_boot_file,"Dataset %d\n", setCounter);
-			}
+			// 	fprintf (options->fpO_boot_file,"Dataset %d\n", setCounter);
+			// }
 			if (options->use_O_mat_file)
 				fprintf (options->fpO_mat_file,"Dataset %d\n", setCounter);
 		}
@@ -136,23 +157,21 @@ int main (int argc, char **argv)
 **********************************************************/
 		if (MATRIX == options->input_type)
 		{
-			D = loadM (options->fpI_data_file, &numSpecies, species);
+			// double** G;
+			// G = loadM (options->fpI_data_file, &numSpecies, species);
+			make_set(numSpecies, species);
+			D = d;
+			for(int i=0; i<numSpecies; i++) {
+				for(int j=0; j<numSpecies; j++) printf("%f ", D[i][j]);
+				printf("\n");
+			}
 			PrintEstimatedMemorySpace (numSpecies, 0, options);
-		}
-/*********************************************************
-		GET DATA FROM SEQUENCES
-**********************************************************/
-		else
-		{
-			Message ( (char*)"something wrong");
 		}
 
 		checkTrgInequality (D, numSpecies, options->trg_ineq);
 
 		species_bk = copySet (species);
 		
-		if (options->use_O_mat_file)
-			printMatrix (D, numSpecies, species, options->fpO_mat_file, options->input_type, options->precision);
 
 /*********************************************************
 		COMPUTE TREE
@@ -174,19 +193,36 @@ int main (int argc, char **argv)
 					fgetpos (options->fpI_tree_file, &fpI_tree_pos);
 				else
 					fsetpos(options->fpI_tree_file, &fpI_tree_pos);
+
+				printf("spicies %i\n", numSpecies);
 				T = loadNewickTree (options->fpI_tree_file, numSpecies);
+				
 				T = detrifurcate (T);
+				printf("hhhh");
+				printTree(T);
 				compareSets (T, species);
 				partitionSizes (T);
 			}
 			else
 			{
 				T = ComputeTree (options, D, A, species, numSpecies, options->precision);
+				printf("hhhh");
+				printTree(T);
+				T = TT;
+				printTree(T);
+				// compareSets (T, species);
+				printf("hhhh");
 			}
 
-			T = ImproveTree (options, T, D, A, &nniCount, &sprCount, options->fpO_stat_file);
+			T = ImproveTree (options, T, d, A, &nniCount, &sprCount, options->fpO_stat_file);
+			printTree(T);
+			printf("********"); // 0.11784069   0.14665112
+			int** adj_mat;
+			adj_mat = tree_to_adj_mat(T);
+			
+			
 		
-			explainedVariance (D, T, numSpecies, options->precision, options->input_type, options->fpO_stat_file);
+			// explainedVariance (D, T, numSpecies, options->precision, options->input_type, options->fpO_stat_file);
 				
 			if (verbose > 0)
 			{
@@ -197,18 +233,9 @@ int main (int argc, char **argv)
 		} //End if 'compute tree'
 
 
-/*********************************************************
-		BOOTSTRAPS
-**********************************************************/
-		if (options->nb_bootstraps > 0 && numSpecies > 3)
-		{
-			Message ( (char*)"Here for some reason");
-		}
-		else
-		{
-			if (! options->only_mat && numSpecies > 3)
-				NewickPrintTree (T, options->fpO_tree_file, options->precision);
-		}
+		if (! options->only_mat && numSpecies > 3){
+			NewickPrintTree (T, options->fpO_tree_file, options->precision);
+			}
 
 #ifndef _OPENMP
 		freeMatrix (A, 2*numSpecies-2);
@@ -712,54 +739,26 @@ void PrintEstimatedMemorySpace (int nbtax, int nbsites, Options *options)
 	return;
 }
 
-/*********************************************************/
 
-int PrintBootstrapInfo (Options *options, int repCounter, int printedRep)
-{
-	//int ID = 0;
+
+// void InitSpeciesAndTrees (Options *options, set *species, char **bootTrees, char *bestTree)
+// {
+// 	int i = 0;
 	
-#ifdef _OPENMP
-	//ID = omp_get_thread_num();
-	#pragma omp master
-#endif
-	// With parallel version : execute only on master thread
-	//if (isBoostrap && ID == 0)
-	if (isBoostrap)
-	{
-		while (printedRep < repCounter)
-		{
-			if (printedRep > 0 && printedRep < options->nb_bootstraps && 0 == (printedRep) % 20)
-				printf ("] %d/%d\n  [", printedRep, options->nb_bootstraps);
-			printf (".");
-			printedRep++;
-		}
-	}
+// 	species->firstNode = NULL;
+// 	species->secondNode = NULL;
 
-	fflush (stdout);
-	fflush (stderr);
-
-	return printedRep;
-}
-
-
-void InitSpeciesAndTrees (Options *options, set *species, char **bootTrees, char *bestTree)
-{
-	int i = 0;
+// 	size_t n = sizeof(bestTree);
+// 	memset (bestTree, '\0', n);
 	
-	species->firstNode = NULL;
-	species->secondNode = NULL;
+// 	// mem alloc for bootstraped trees strings
+// 	for (i=0; i<options->nb_bootstraps; i++)
+// 	{
+// 		bootTrees[i] = (char *) mCalloc (MAX_INPUT_SIZE, sizeof (char));
+// 	}
 
-	size_t n = sizeof(bestTree);
-	memset (bestTree, '\0', n);
-	
-	// mem alloc for bootstraped trees strings
-	for (i=0; i<options->nb_bootstraps; i++)
-	{
-		bootTrees[i] = (char *) mCalloc (MAX_INPUT_SIZE, sizeof (char));
-	}
-
-	return;
-}
+// 	return;
+// }
 
 /*********************************************************/
 

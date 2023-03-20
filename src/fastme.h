@@ -28,8 +28,9 @@
 #include "SPR.h"
 #include "random.h"
 #include "distance.h"
+#include "initialiser.h"
 
-int run(double** d, int n_taxa, int argc, char **argv);
+int run(double** d, int n_taxa, int** init_adj, int argc, char **argv);
 
 void printFinalData (Options *options, char **bootTrees, char **matStr);
 

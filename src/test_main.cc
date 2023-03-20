@@ -28,7 +28,7 @@ int** fill_int_matrix() {
     int** matrix = new int*[28];
     std::fstream file("init_mat");
     std::string line;
-    std::cout<<" ***\n";
+    // std::cout<<" ***\n";
     int row=0;
     while (getline(file, line) and row < 28){
         std::stringstream ss( line );                     
@@ -38,10 +38,11 @@ int** fill_int_matrix() {
         while (getline( ss, data, ' ' ) )           
         {
             matrix[row][col]=stoi(data);
+            // std::cout<<matrix[row][col]<<" ";
             col++;
-            std::cout<<stoi(data)<<" ";
+            
         }
-        std::cout<<"\n";
+        // std::cout<<"\n";
         row++;
     }
     return matrix;
@@ -52,7 +53,7 @@ double** fill_matrix() {
     double** matrix = new double*[15];
     std::fstream file("mat");
     std::string line;
-    std::cout<<" ***\n";
+    // std::cout<<" ***\n";
     int row=0;
     while (getline(file, line) and row < 15){
         std::stringstream ss( line );                     
@@ -63,9 +64,9 @@ double** fill_matrix() {
         {
             matrix[row][col]=stod(data);
             col++;
-            std::cout<<stod(data)<<" ";
+            // std::cout<<stod(data)<<" ";
         }
-        std::cout<<"\n";
+        // std::cout<<"\n";
         row++;
     }
     return matrix;
@@ -76,13 +77,13 @@ int main (int argc, char **argv) {
     // Options *options;
     // options = chooseSettings (argc, argv);
     double** D = fill_matrix();
-    int** A = fill_int_matrix();
-    printf("ok\n");
+    int** init_adj = fill_int_matrix();
+    // printf("ok\n");
     
     // D = loadMattrix(3);
     // D = loadM (options->fpI_data_file, &numSpecies, species);
     // printf("ok\n");
-    run(D, 15, argc, argv);
+    run(D, 15, init_adj, argc, argv);
 }
 
 
