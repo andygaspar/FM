@@ -126,6 +126,8 @@ int run(double**d, int n_taxa, int** init_adj, int argc, char **argv)
 		nniCount = sprCount = repCounter = 0;
 		setCounter++;
 		species = (set *) mCalloc (1, sizeof(set));
+		species->firstNode = NULL;
+		species->secondNode = NULL;
 		
 		printf ("\n#  Analysing dataset %d\n", setCounter);
 
@@ -160,6 +162,7 @@ int run(double**d, int n_taxa, int** init_adj, int argc, char **argv)
 			// double** G;
 			// G = loadM (options->fpI_data_file, &numSpecies, species);
 			make_set(numSpecies, species);
+			printf("****************************************");
 			D = d;
 			for(int i=0; i<numSpecies; i++) {
 				for(int j=0; j<numSpecies; j++) printf("%f ", D[i][j]);

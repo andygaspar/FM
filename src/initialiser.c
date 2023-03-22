@@ -123,8 +123,8 @@ void adj_to_tree_recursion(int mat_index, int parent_mat_index, int *node_index,
 		
 
 		if (sparse_A[mat_index][1] == -1) { // is a leaf
-			*leaf_index = *leaf_index+1;
-			child -> index2 = *leaf_index;
+			*leaf_index = mat_index;
+			child -> index2 = mat_index;
 			}
 		else{
 			is_left = 0;

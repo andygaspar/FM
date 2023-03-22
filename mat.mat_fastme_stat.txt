@@ -1,8 +1,5 @@
 
- - FastME 
- - FastME %s - 
-
- - 
+ - FastME 2.1.6.4 - 
 
 
 Paper to be cited:
@@ -25,3 +22,36 @@ Dataset 1
 	Two tree searches are performed, with NNIs and SPRs respectively.
 	The resulting tree is the best (shortest) of both.
 
+	Tree length is 12.00000000000000000
+	Before NNI:     tree length is 0.16539948993164061
+	NNI      1: new tree length is 0.16410113774414059
+	NNI      2: new tree length is 0.16263047045898435
+	NNI      3: new tree length is 0.16138091833984372
+	NNI      4: new tree length is 0.16049087667968748
+	NNI      5: new tree length is 0.15959822109374999
+	NNI      6: new tree length is 0.15860806332031249
+	NNI      7: new tree length is 0.15799241025390626
+	NNI      8: new tree length is 0.15628699056640627
+	NNI      9: new tree length is 0.15407952699218752
+	NNI     10: new tree length is 0.15330449871093751
+	NNI     11: new tree length is 0.15211791050781251
+	NNI     12: new tree length is 0.15058191601562501
+	NNI     13: new tree length is 0.14902700781250000
+	NNI     14: new tree length is 0.14875417832031251
+	NNI     15: new tree length is 0.14861707222656251
+	Performed 15 NNI(s).
+
+	Assign BME weights and re-weight tree.
+	Before SPR:     tree length is 0.16539948993164061
+	SPR      1: new tree length is 0.15999186139160151
+	SPR      2: new tree length is 0.15529137428710932
+	SPR      3: new tree length is 0.15255368833984373
+	SPR      4: new tree length is 0.15053105152343751
+	SPR      5: new tree length is 0.14830745875000001
+	SPR      6: new tree length is 0.14742367375000001
+	SPR      7: new tree length is 0.14710009148437506
+	SPR      8: new tree length is 0.14688213085937504
+	SPR      9: new tree length is 0.14673830625000001
+	Performed 9 SPR(s).
+
+	Explained variance : 0.94818717273681208
