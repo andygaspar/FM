@@ -10,6 +10,7 @@ rm *o
 echo "$PWD"
 
 
+
 cd ..
 ./src/fast_me_ -i mat.mat -m b -n -s -f 17
 ./fastme -i mat.mat -m b -n -s -u init_topology.nwk -f 17
