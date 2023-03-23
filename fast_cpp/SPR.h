@@ -33,8 +33,7 @@
 
 void zero3DMatrix (double ***X, int h, int l, int w);
 void findTableMin (int *imin, int *jmin, int *kmin, int n, double ***X, double *min);
-void SPR (tree *T, double **D, double **A, int *count, FILE *statfile,
-	int precision);
+void SPR (tree *T, double **D, double **A, int *count);
 void assignSPRWeights (node *vtest, double **A, double ***swapWeights);
 void assignDownWeightsUp (edge *etest, node *vtest, node *va, edge *back,
 	node *cprev, double oldD_AB, double coeff, double **A, double ***swapWeights);

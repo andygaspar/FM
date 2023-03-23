@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/src/fast_me_",
+            "program": "${workspaceFolder}/fast_cpp/fast_me",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",

@@ -26,7 +26,7 @@ using string = std::string;
 
 int** fill_int_matrix() {
     int** matrix = new int*[28];
-    std::fstream file("init_mat");
+    std::fstream file("../init_mat");
     std::string line;
     // std::cout<<" ***\n";
     int row=0;
@@ -51,7 +51,7 @@ int** fill_int_matrix() {
 
 double** fill_matrix() {
     double** matrix = new double*[15];
-    std::fstream file("mat");
+    std::fstream file("../mat");
     std::string line;
     // std::cout<<" ***\n";
     int row=0;
@@ -72,7 +72,7 @@ double** fill_matrix() {
     return matrix;
 }
 
-int main (int argc, char **argv) {
+int main () {
     // printf("ok\n");
     // Options *options;
     // options = chooseSettings (argc, argv);
@@ -83,7 +83,7 @@ int main (int argc, char **argv) {
     // D = loadMattrix(3);
     // D = loadM (options->fpI_data_file, &numSpecies, species);
     // printf("ok\n");
-    run(D, 15, init_adj, argc, argv);
+    run(D, 15, init_adj);
 }
 
 
